@@ -20,8 +20,8 @@ Route::middleware(['auth'])->group(function () {
 
     Volt::route('zonas', 'zones')->name('zones.index');
 
-
-
+    Volt::route('roles', 'rolesmanagment')->name('roles.index');
+    Volt::route('usuarios', 'users')->name('users.index');
 });
 
 require __DIR__.'/auth.php';
