@@ -19,6 +19,7 @@ Route::middleware(['auth'])->group(function () {
     Volt::route('settings/appearance', 'settings.appearance')->name('settings.appearance');
 
     Volt::route('zonas', 'zones')->name('zones.index');
+    Volt::route('stores','stores')->name('stores.index');
 
     Volt::route('roles', 'rolesmanagment')->name('roles.index');
     Volt::route('usuarios', 'users')->name('users.index');

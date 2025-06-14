@@ -194,14 +194,15 @@ new class extends Component {
     }
 }; ?>
 
-<div class="p-6">
+<div class="p-6" x-data="{}">
     <!-- Header -->
     <div class="mb-6 flex justify-between items-center">
         <div>
-            <h1 class="text-2xl font-bold text-gray-900">Gestión de Roles</h1>
-            <p class="text-gray-600">Administra los roles y sus permisos</p>
+            <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Gestión de Roles</h1>
+            <p class="text-gray-600 dark:text-gray-400">Administra los roles y sus permisos</p>
         </div>
-        <button wire:click="openCreateModal" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2">
+        <button wire:click="openCreateModal" 
+                class="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors">
             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>
@@ -212,9 +213,14 @@ new class extends Component {
     <!-- Search -->
     <div class="mb-6">
         <div class="relative">
-            <input wire:model.live.debounce.300ms="search" type="text" placeholder="Buscar roles..."
-                   class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-            <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <input wire:model.live.debounce.300ms="search" 
+                   type="text" 
+                   placeholder="Buscar roles..."
+                   class="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
+                          focus:ring-2 focus:ring-blue-500 focus:border-transparent 
+                          bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 
+                          placeholder-gray-500 dark:placeholder-gray-400">
+            <svg class="absolute left-3 top-2.5 h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
             </svg>
         </div>
@@ -222,115 +228,136 @@ new class extends Component {
 
     <!-- Flash Messages -->
     @if (session()->has('message'))
-        <div class="mb-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-green-50 dark:bg-green-900/50 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-300 px-4 py-3 rounded-lg">
             {{ session('message') }}
         </div>
     @endif
 
     @if (session()->has('error'))
-        <div class="mb-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <div class="mb-4 bg-red-50 dark:bg-red-900/50 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 px-4 py-3 rounded-lg">
             {{ session('error') }}
         </div>
     @endif
 
     <!-- Roles Table -->
-    <div class="bg-white rounded-lg shadow overflow-hidden">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-gray-50">
-            <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rol</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Permisos</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Usuarios</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
-            </tr>
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-900/50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Rol</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Permisos</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Usuarios</th>
+                    <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Acciones</th>
+                </tr>
             </thead>
-            <tbody class="bg-white divide-y divide-gray-200">
-            @forelse ($roles as $role)
-                <tr class="hover:bg-gray-50">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        <div class="font-medium text-gray-900">{{ $role->name }}</div>
-                    </td>
-                    <td class="px-6 py-4">
-                        <div class="flex flex-wrap gap-1">
-                            @foreach ($role->permissions->take(3) as $permission)
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+                @forelse ($roles as $role)
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="font-medium text-gray-900 dark:text-gray-100">{{ $role->name }}</div>
+                        </td>
+                        <td class="px-6 py-4">
+                            <div class="flex flex-wrap gap-1">
+                                @foreach ($role->permissions->take(3) as $permission)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                 bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">
                                         {{ $this->getPermissionDisplay($permission->name) }}
                                     </span>
-                            @endforeach
-                            @if ($role->permissions->count() > 3)
-                                <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                @endforeach
+                                @if ($role->permissions->count() > 3)
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium 
+                                                 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300">
                                         +{{ $role->permissions->count() - 3 }} más
                                     </span>
-                            @endif
-                        </div>
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                        {{ $role->users->count() }} usuarios
-                    </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button wire:click="openEditModal({{ $role->id }})"
-                                class="text-blue-600 hover:text-blue-900 mr-4">
-                            Editar
-                        </button>
-                        <button wire:click="confirmDelete({{ $role->id }})"
-                                class="text-red-600 hover:text-red-900">
-                            Eliminar
-                        </button>
-                    </td>
-                </tr>
-            @empty
-                <tr>
-                    <td colspan="4" class="px-6 py-4 text-center text-gray-500">
-                        No se encontraron roles.
-                    </td>
-                </tr>
-            @endforelse
+                                @endif
+                            </div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100">
+                            {{ $role->users->count() }} usuarios
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                            <div class="flex justify-end gap-2">
+                                <button wire:click="openEditModal({{ $role->id }})" 
+                                        class="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300 transition-colors">
+                                    Editar
+                                </button>
+                                <button wire:click="confirmDelete({{ $role->id }})" 
+                                        class="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300 transition-colors">
+                                    Eliminar
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="4" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
+                            No se encontraron roles.
+                        </td>
+                    </tr>
+                @endforelse
             </tbody>
         </table>
 
         <!-- Pagination -->
-        <div class="px-6 py-3 border-t border-gray-200">
+        <div class="px-6 py-3 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50">
             {{ $roles->links() }}
         </div>
     </div>
 
     <!-- Create/Edit Modal -->
     @if ($showModal)
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-md bg-white">
+        <div class="fixed inset-0 bg-gray-600/50 dark:bg-gray-900/75 overflow-y-auto h-full w-full z-50" 
+             x-data x-show="true" x-transition>
+            <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-1/2 shadow-lg rounded-lg 
+                        bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <div class="mb-4">
-                    <h3 class="text-lg font-medium text-gray-900">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100">
                         {{ $editingRole ? 'Editar Rol' : 'Crear Nuevo Rol' }}
                     </h3>
                 </div>
 
                 <form wire:submit="save">
                     <!-- Role Name -->
-                    <div class="mb-4">
-                        <label for="roleName" class="block text-sm font-medium text-gray-700 mb-2">
+                    <div class="mb-6">
+                        <label for="roleName" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                             Nombre del Rol *
                         </label>
-                        <input wire:model="roleName" type="text" id="roleName"
-                               class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <input wire:model="roleName" 
+                               type="text" 
+                               id="roleName"
+                               placeholder="Ingrese el nombre del rol"
+                               class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md 
+                                      focus:outline-none focus:ring-2 focus:ring-blue-500 
+                                      bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100
+                                      placeholder-gray-500 dark:placeholder-gray-400">
                         @error('roleName')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                            <span class="text-red-500 dark:text-red-400 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <!-- Permissions -->
                     <div class="mb-6">
-                        <label class="block text-sm font-medium text-gray-700 mb-3">Permisos</label>
-                        <div class="max-h-64 overflow-y-auto border border-gray-200 rounded-md p-4">
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">Permisos</label>
+                        <div class="max-h-64 overflow-y-auto border border-gray-200 dark:border-gray-600 rounded-md p-4 
+                                    bg-gray-50 dark:bg-gray-900/50">
                             @foreach ($permissionGroups as $module => $permissions)
                                 <div class="mb-4">
-                                    <h4 class="font-medium text-gray-900 mb-2">{{ $this->getModuleDisplay($module) }}</h4>
-                                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                                    <h4 class="font-medium text-gray-900 dark:text-gray-100 mb-2">
+                                        {{ $this->getModuleDisplay($module) }}
+                                    </h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
                                         @foreach ($permissions as $permission)
-                                            <label class="flex items-center">
-                                                <input wire:model="selectedPermissions" type="checkbox"
+                                            <label class="flex items-center cursor-pointer">
+                                                <input wire:model="selectedPermissions" 
+                                                       type="checkbox"
                                                        value="{{ $permission['name'] }}"
-                                                       class="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
-                                                <span class="ml-2 text-sm text-gray-700">{{ $permission['display'] }}</span>
+                                                       class="rounded border-gray-300 dark:border-gray-600 
+                                                              text-blue-600 dark:text-blue-500 
+                                                              shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50
+                                                              bg-white dark:bg-gray-800">
+                                                <span class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                                                    {{ $permission['display'] }}
+                                                </span>
                                             </label>
                                         @endforeach
                                     </div>
@@ -340,13 +367,18 @@ new class extends Component {
                     </div>
 
                     <!-- Actions -->
-                    <div class="flex justify-end gap-3">
-                        <button type="button" wire:click="closeModal"
-                                class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-200 rounded-md hover:bg-gray-300">
+                    <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-600">
+                        <button type="button" 
+                                wire:click="closeModal"
+                                class="px-4 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 
+                                       bg-gray-200 dark:bg-gray-700 rounded-md 
+                                       hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors">
                             Cancelar
                         </button>
                         <button type="submit"
-                                class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700">
+                                class="px-4 py-2 text-sm font-medium text-white 
+                                       bg-blue-600 dark:bg-blue-500 rounded-md 
+                                       hover:bg-blue-700 dark:hover:bg-blue-600 transition-colors">
                             {{ $editingRole ? 'Actualizar' : 'Crear' }}
                         </button>
                     </div>
@@ -357,24 +389,31 @@ new class extends Component {
 
     <!-- Delete Confirmation Modal -->
     @if ($showDeleteModal && $roleToDelete)
-        <div class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
-            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                <div class="mt-3 text-center">
-                    <h3 class="text-lg font-medium text-gray-900">Confirmar Eliminación</h3>
-                    <div class="mt-2 px-7 py-3">
-                        <p class="text-sm text-gray-500">
-                            ¿Estás seguro de que deseas eliminar el rol "{{ $roleToDelete->name }}"?
-                            Esta acción no se puede deshacer.
+        <div class="fixed inset-0 bg-gray-600/50 dark:bg-gray-900/75 overflow-y-auto h-full w-full z-50"
+             x-data x-show="true" x-transition>
+            <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-lg 
+                        bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+                <div class="text-center">
+                    <h3 class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-4">
+                        Confirmar Eliminación
+                    </h3>
+                    <div class="mb-6">
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            ¿Estás seguro de que deseas eliminar el rol 
+                            "<strong class="text-gray-900 dark:text-gray-100">{{ $roleToDelete->name }}</strong>"?
+                            <br>Esta acción no se puede deshacer.
                         </p>
                     </div>
-                    <div class="items-center px-4 py-3">
-                        <button wire:click="delete"
-                                class="px-4 py-2 bg-red-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-300 mr-2">
-                            Eliminar
-                        </button>
+                    <div class="flex justify-center gap-3">
                         <button wire:click="$set('showDeleteModal', false)"
-                                class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md shadow-sm hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                                class="px-4 py-2 bg-gray-500 dark:bg-gray-600 text-white text-base font-medium rounded-md 
+                                       shadow-sm hover:bg-gray-700 dark:hover:bg-gray-500 transition-colors">
                             Cancelar
+                        </button>
+                        <button wire:click="delete"
+                                class="px-4 py-2 bg-red-500 dark:bg-red-600 text-white text-base font-medium rounded-md 
+                                       shadow-sm hover:bg-red-700 dark:hover:bg-red-500 transition-colors">
+                            Eliminar
                         </button>
                     </div>
                 </div>
