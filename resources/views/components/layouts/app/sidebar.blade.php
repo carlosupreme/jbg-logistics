@@ -13,7 +13,7 @@
 
             <flux:navlist variant="outline">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="map-pin" :href="route('dashboard')" :current="request()->routeIs('zonas')" wire:navigate>{{ __('Zonas') }}</flux:navlist.item>
+                    <flux:navlist.item icon="map-pin" :href="route('zones.index')" :current="request()->routeIs('zones.*')" wire:navigate>{{ __('Zonas') }}</flux:navlist.item>
                     <flux:navlist.item icon="building-storefront" :href="route('dashboard')" :current="request()->routeIs('tiendas')" wire:navigate>{{ __('Tiendas') }}</flux:navlist.item>
                     <flux:navlist.item icon="users" :href="route('dashboard')" :current="request()->routeIs('usuarios')" wire:navigate>{{ __('Usuarios') }}</flux:navlist.item>
             </flux:navlist>
